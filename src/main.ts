@@ -1,3 +1,7 @@
+if (typeof document !== "undefined") {
+  import("./style.css");
+}
+
 export function inicializarSala(): number[][] {
   const sala: number[][] = [];
 
@@ -130,3 +134,165 @@ for (let fila = 1; fila <= salaLlena.length; fila++) {
 const conteosSalaLlena = contarAsientos(salaLlena);
 console.log(`Ocupados: ${conteosSalaLlena[0]}, disponibles: ${conteosSalaLlena[1]}`);
 buscarAsientosContiguos(salaLlena);
+
+if (typeof document !== "undefined") {
+  const salaInterfaz = inicializarSala();
+  let filaSeleccionada = 0;
+  let columnaSeleccionada = 0;
+  let filaParejaSugerida = 0;
+  let columnaParejaSugerida = 0;
+  let indiceInicioBusqueda = 0;
+
+function mostrarMensaje(texto: string, tipo: string): void {
+  const mensaje = document.querySelector<HTMLParagraphElement>("#message");
+  if (mensaje) {
+    mensaje.textContent = texto;
+    mensaje.className = `message ${tipo}`;
+  }
+}
+
+function actualizarContadores(): void {
+  const conteos = contarAsientos(salaInterfaz);
+  const ocupados = document.querySelector<HTMLElement>("#occupied-count");
+  const disponibles = document.querySelector<HTMLElement>("#available-count");
+
+  if (ocupados) ocupados.textContent = `${conteos[0]}`;
+  if (disponibles) disponibles.textContent = `${conteos[1]}`;
+}
+
+function renderizarSala(): void {
+  const mapa = document.querySelector<HTMLDivElement>("#seat-map");
+  if (!mapa) return;
+
+  mapa.innerHTML = "";
+
+  const esquina = document.createElement("span");
+  esquina.className = "grid-corner";
+  mapa.appendChild(esquina);
+
+  for (let columna = 1; columna <= 10; columna++) {
+    const encabezado = document.createElement("span");
+    encabezado.className = "column-label";
+    encabezado.textContent = `${columna}`;
+    mapa.appendChild(encabezado);
+  }
+
+  for (let fila = 0; fila < salaInterfaz.length; fila++) {
+    const etiqueta = document.createElement("span");
+    etiqueta.className = "row-label";
+    etiqueta.textContent = `${fila + 1}`;
+    mapa.appendChild(etiqueta);
+
+    for (let columna = 0; columna < salaInterfaz[fila].length; columna++) {
+      const asiento = document.createElement("button");
+      const estaOcupado = salaInterfaz[fila][columna] === 1;
+      asiento.type = "button";
+      asiento.className = estaOcupado ? "seat occupied" : "seat available";
+      asiento.textContent = `${columna + 1}`;
+      asiento.setAttribute("aria-label", `Fila ${fila + 1}, asiento ${columna + 1}`);
+      asiento.disabled = estaOcupado;
+
+      if (
+        fila + 1 === filaParejaSugerida &&
+        (columna + 1 === columnaParejaSugerida || columna + 1 === columnaParejaSugerida + 1)
+      ) {
+        asiento.className = "seat suggested";
+      }
+
+      if (fila === filaSeleccionada - 1 && columna === columnaSeleccionada - 1) {
+        asiento.className = "seat selected";
+      }
+
+      asiento.addEventListener("click", () => {
+        filaSeleccionada = fila + 1;
+        columnaSeleccionada = columna + 1;
+        const seleccion = document.querySelector<HTMLElement>("#selected-seat");
+        const ayuda = document.querySelector<HTMLParagraphElement>("#selection-help");
+        const reservar = document.querySelector<HTMLButtonElement>("#reserve-button");
+
+        if (seleccion) seleccion.textContent = `Fila ${filaSeleccionada}, asiento ${columnaSeleccionada}`;
+        if (ayuda) ayuda.textContent = "Confirma tu selección para reservarla.";
+        if (reservar) reservar.disabled = false;
+        mostrarMensaje("Asiento seleccionado. Confirma para reservar.", "info");
+        renderizarSala();
+      });
+
+      mapa.appendChild(asiento);
+    }
+  }
+}
+
+function reservarSeleccion(): void {
+  if (filaSeleccionada === 0 || columnaSeleccionada === 0) {
+    mostrarMensaje("Selecciona un asiento libre primero.", "error");
+    return;
+  }
+
+  const asientoAntesDeReservar = salaInterfaz[filaSeleccionada - 1][columnaSeleccionada - 1];
+  const esParteDeLaPareja =
+    filaSeleccionada === filaParejaSugerida &&
+    (columnaSeleccionada === columnaParejaSugerida ||
+      columnaSeleccionada === columnaParejaSugerida + 1);
+  reservarAsiento(salaInterfaz, filaSeleccionada, columnaSeleccionada);
+
+  if (asientoAntesDeReservar === 0) {
+    mostrarMensaje(`Reserva confirmada: fila ${filaSeleccionada}, asiento ${columnaSeleccionada}.`, "success");
+    filaSeleccionada = 0;
+    columnaSeleccionada = 0;
+    if (esParteDeLaPareja) {
+      filaParejaSugerida = 0;
+      columnaParejaSugerida = 0;
+    }
+    const seleccion = document.querySelector<HTMLElement>("#selected-seat");
+    const ayuda = document.querySelector<HTMLParagraphElement>("#selection-help");
+    const reservar = document.querySelector<HTMLButtonElement>("#reserve-button");
+    if (seleccion) seleccion.textContent = "Ninguno";
+    if (ayuda) ayuda.textContent = "Pulsa un asiento libre para seleccionarlo.";
+    if (reservar) reservar.disabled = true;
+    actualizarContadores();
+    renderizarSala();
+  } else {
+    mostrarMensaje("Ese asiento ya está ocupado.", "error");
+  }
+}
+
+function buscarPareja(): void {
+  let pareja: number[] = [];
+  let indiceActual = 0;
+
+  for (let fila = 0; fila < salaInterfaz.length; fila++) {
+    for (let columna = 0; columna < salaInterfaz[fila].length - 1; columna++) {
+      if (indiceActual >= indiceInicioBusqueda && salaInterfaz[fila][columna] === 0 && salaInterfaz[fila][columna + 1] === 0) {
+        pareja = [fila + 1, columna + 1, columna + 2];
+        break;
+      }
+      indiceActual++;
+    }
+    if (pareja.length > 0) break;
+  }
+
+  if (pareja.length === 0) {
+    filaParejaSugerida = 0;
+    columnaParejaSugerida = 0;
+    indiceInicioBusqueda = 0;
+    mostrarMensaje("No hay dos asientos libres contiguos.", "error");
+    renderizarSala();
+    return;
+  }
+
+  filaParejaSugerida = pareja[0];
+  columnaParejaSugerida = pareja[1];
+  indiceInicioBusqueda = indiceActual + 1;
+  mostrarMensaje(`Pareja disponible: fila ${pareja[0]}, asientos ${pareja[1]} y ${pareja[2]}.`, "success");
+  renderizarSala();
+}
+
+  const botonReservar = document.querySelector<HTMLButtonElement>("#reserve-button");
+  const botonBuscar = document.querySelector<HTMLButtonElement>("#search-button");
+
+  if (botonReservar) botonReservar.addEventListener("click", reservarSeleccion);
+  if (botonBuscar) botonBuscar.addEventListener("click", buscarPareja);
+
+  renderizarSala();
+  actualizarContadores();
+}

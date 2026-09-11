@@ -1,24 +1,70 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World with Typescript</title>
+    <title>Cinema Seat Manager</title>
   </head>
-  <body class="min-h-screen bg-slate-100 text-slate-900">
-    <main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-6 p-6">
-      <h1 class="text-4xl font-bold tracking-tight">Hello World with Typescript</h1>
-
-      <section class="w-full max-w-md overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <img
-          src="/rigo-baby.jpg"
-          alt="Hello Rigo"
-          class="h-64 w-full bg-slate-50 object-contain p-2"
-        />
-        <div class="p-5">
-          <h2 class="text-xl font-semibold text-slate-900">Hello Rigo</h2>
-          <p id="app" class="mt-2 text-sm text-slate-600"></p>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <span class="brand-mark" aria-hidden="true">CS</span>
+          <div>
+            <p class="eyebrow">Sala 01 · Cinema Central</p>
+            <h1>Cinema Seat Manager</h1>
+          </div>
         </div>
+        <div class="status-pill"><span class="status-dot"></span>Venta abierta</div>
+      </header>
+
+      <section class="hero-copy">
+        <p class="eyebrow">Mapa de butacas</p>
+        <h2>Elige tu lugar para la próxima función.</h2>
+        <p class="hero-description">Selecciona un asiento libre o encuentra dos lugares contiguos para sentarte acompañado.</p>
+      </section>
+
+      <section class="dashboard-grid">
+        <div class="seat-panel">
+          <div class="screen-wrap">
+            <div class="screen" aria-label="Pantalla del cine">PANTALLA</div>
+            <p>Vista desde la pantalla</p>
+          </div>
+
+          <div class="seat-map" id="seat-map" aria-label="Mapa de asientos del cine"></div>
+
+          <div class="legend" aria-label="Leyenda de asientos">
+            <span><i class="legend-seat available"></i>Libre</span>
+            <span><i class="legend-seat occupied"></i>Ocupado</span>
+            <span><i class="legend-seat selected"></i>Seleccionado</span>
+            <span><i class="legend-seat suggested"></i>Pareja sugerida</span>
+          </div>
+        </div>
+
+        <aside class="control-panel">
+          <div class="panel-heading">
+            <p class="eyebrow">Resumen de sala</p>
+            <h2>Tu selección</h2>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card"><span class="stat-label">Ocupados</span><strong id="occupied-count">0</strong><span class="stat-note">asientos</span></div>
+            <div class="stat-card"><span class="stat-label">Disponibles</span><strong id="available-count">80</strong><span class="stat-note">asientos</span></div>
+          </div>
+
+          <div class="selection-card">
+            <span class="stat-label">Asiento seleccionado</span>
+            <strong id="selected-seat">Ninguno</strong>
+            <p id="selection-help">Pulsa un asiento libre para seleccionarlo.</p>
+          </div>
+
+          <div class="action-stack">
+            <button id="reserve-button" class="primary-button" type="button" disabled>Reservar asiento</button>
+            <button id="search-button" class="secondary-button" type="button">Buscar 2 asientos contiguos</button>
+          </div>
+
+          <p id="message" class="message" role="status" aria-live="polite">La sala está lista para recibir reservas.</p>
+        </aside>
       </section>
     </main>
     <script type="module" src="/src/main.ts"></script>
