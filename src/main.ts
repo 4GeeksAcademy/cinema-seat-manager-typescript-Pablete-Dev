@@ -95,16 +95,38 @@ export function buscarAsientosContiguos(sala: number[][]): number[] {
   return [];
 }
 
-const sala = inicializarSala();
-mostrarSala(sala);
+console.log("\n--- Prueba: sala vacia ---");
+const salaVacia = inicializarSala();
+const conteosSalaVacia = contarAsientos(salaVacia);
+console.log(`Ocupados: ${conteosSalaVacia[0]}, disponibles: ${conteosSalaVacia[1]}`);
+buscarAsientosContiguos(salaVacia);
 
-reservarAsiento(sala, 1, 1);
-reservarAsiento(sala, 1, 1);
-reservarAsiento(sala, 9, 1);
-mostrarSala(sala);
+console.log("\n--- Prueba: sala parcialmente ocupada ---");
+const salaParcial = inicializarSala();
+salaParcial[0][0] = 1;
+salaParcial[1][4] = 1;
+const conteosSalaParcial = contarAsientos(salaParcial);
+console.log(`Ocupados: ${conteosSalaParcial[0]}, disponibles: ${conteosSalaParcial[1]}`);
+buscarAsientosContiguos(salaParcial);
 
-const conteos = contarAsientos(sala);
-console.log(`Asientos ocupados: ${conteos[0]}`);
-console.log(`Asientos disponibles: ${conteos[1]}`);
+console.log("\n--- Prueba: asientos libres sueltos ---");
+const salaSinPares = inicializarSala();
+for (let fila = 1; fila <= salaSinPares.length; fila++) {
+  for (let columna = 1; columna <= 10; columna += 2) {
+    salaSinPares[fila - 1][columna - 1] = 1;
+  }
+}
+const conteosSalaSinPares = contarAsientos(salaSinPares);
+console.log(`Ocupados: ${conteosSalaSinPares[0]}, disponibles: ${conteosSalaSinPares[1]}`);
+buscarAsientosContiguos(salaSinPares);
 
-buscarAsientosContiguos(sala);
+console.log("\n--- Prueba: sala completamente llena ---");
+const salaLlena = inicializarSala();
+for (let fila = 1; fila <= salaLlena.length; fila++) {
+  for (let columna = 1; columna <= 10; columna++) {
+    salaLlena[fila - 1][columna - 1] = 1;
+  }
+}
+const conteosSalaLlena = contarAsientos(salaLlena);
+console.log(`Ocupados: ${conteosSalaLlena[0]}, disponibles: ${conteosSalaLlena[1]}`);
+buscarAsientosContiguos(salaLlena);
