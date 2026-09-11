@@ -61,6 +61,23 @@ export function reservarAsiento(
   console.log("Asiento reservado correctamente.");
 }
 
+export function contarAsientos(sala: number[][]): number[] {
+  let ocupados = 0;
+  let disponibles = 0;
+
+  for (let fila = 0; fila < sala.length; fila++) {
+    for (let columna = 0; columna < sala[fila].length; columna++) {
+      if (sala[fila][columna] === 1) {
+        ocupados++;
+      } else {
+        disponibles++;
+      }
+    }
+  }
+
+  return [ocupados, disponibles];
+}
+
 const sala = inicializarSala();
 mostrarSala(sala);
 
@@ -68,3 +85,7 @@ reservarAsiento(sala, 1, 1);
 reservarAsiento(sala, 1, 1);
 reservarAsiento(sala, 9, 1);
 mostrarSala(sala);
+
+const conteos = contarAsientos(sala);
+console.log(`Asientos ocupados: ${conteos[0]}`);
+console.log(`Asientos disponibles: ${conteos[1]}`);
