@@ -1,12 +1,15 @@
-if (typeof document !== "undefined") {
-  import("./style.css").then(() => {
-    const app = document.querySelector<HTMLParagraphElement>("#app");
-    if (app) {
-      app.textContent = "If you can see this, Tailwind is working.";
+export function inicializarSala(): number[][] {
+  const sala: number[][] = [];
+
+  for (let fila = 0; fila < 8; fila++) {
+    const asientos: number[] = [];
+
+    for (let columna = 0; columna < 10; columna++) {
+      asientos.push(0);
     }
-  });
+
+    sala.push(asientos);
+  }
+
+  return sala;
 }
-
-console.log("Hello from src/main.ts");
-
-export {};
