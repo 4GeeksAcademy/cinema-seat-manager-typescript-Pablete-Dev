@@ -78,6 +78,23 @@ export function contarAsientos(sala: number[][]): number[] {
   return [ocupados, disponibles];
 }
 
+export function buscarAsientosContiguos(sala: number[][]): number[] {
+  for (let fila = 0; fila < sala.length; fila++) {
+    for (let columna = 0; columna < sala[fila].length - 1; columna++) {
+      if (sala[fila][columna] === 0 && sala[fila][columna + 1] === 0) {
+        const resultado = [fila + 1, columna + 1, columna + 2];
+        console.log(
+          `Primer par libre: fila ${resultado[0]}, columnas ${resultado[1]} y ${resultado[2]}.`,
+        );
+        return resultado;
+      }
+    }
+  }
+
+  console.log("No hay dos asientos libres contiguos.");
+  return [];
+}
+
 const sala = inicializarSala();
 mostrarSala(sala);
 
@@ -89,3 +106,5 @@ mostrarSala(sala);
 const conteos = contarAsientos(sala);
 console.log(`Asientos ocupados: ${conteos[0]}`);
 console.log(`Asientos disponibles: ${conteos[1]}`);
+
+buscarAsientosContiguos(sala);
