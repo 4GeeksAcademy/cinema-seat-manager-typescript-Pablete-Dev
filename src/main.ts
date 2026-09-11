@@ -34,5 +34,37 @@ export function mostrarSala(sala: number[][]): void {
   }
 }
 
+export function reservarAsiento(
+  sala: number[][],
+  fila: number,
+  columna: number,
+): void {
+  if (fila < 1 || fila > sala.length) {
+    console.log("Error: la fila no existe.");
+    return;
+  }
+
+  const indiceFila = fila - 1;
+  const indiceColumna = columna - 1;
+
+  if (columna < 1 || columna > sala[indiceFila].length) {
+    console.log("Error: la columna no existe.");
+    return;
+  }
+
+  if (sala[indiceFila][indiceColumna] === 1) {
+    console.log("Error: el asiento ya esta ocupado.");
+    return;
+  }
+
+  sala[indiceFila][indiceColumna] = 1;
+  console.log("Asiento reservado correctamente.");
+}
+
 const sala = inicializarSala();
+mostrarSala(sala);
+
+reservarAsiento(sala, 1, 1);
+reservarAsiento(sala, 1, 1);
+reservarAsiento(sala, 9, 1);
 mostrarSala(sala);
