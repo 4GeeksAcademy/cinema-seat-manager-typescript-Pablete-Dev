@@ -1,112 +1,55 @@
-# Hello World with Typescript
+# Cinema Seat Manager
 
-<!-- hide -->
-> By [@ehiber](https://github.com/ehiber) and contributors at [4Geeks Academy](https://4geeksacademy.com/)
+Cinema Seat Manager es un proyecto sencillo en TypeScript para gestionar una sala de cine de 8 filas por 10 asientos. La lógica utiliza funciones, arreglos y ciclos simples, sin clases ni objetos para el reto.
 
-[![build by developers](https://img.shields.io/badge/build_by-Developers-blue)](https://4geeks.com)
-[![twitter](https://img.shields.io/twitter/follow/4geeksacademy?style=social&logo=twitter)](https://twitter.com/4geeksacademy)
+## Funcionalidades implementadas
 
-*Estas instrucciones estan disponibles en [espanol](./README.es.md).*
-<!-- endhide -->
-Start coding a TypeScript/HTML/CSS website in 30 seconds by opening this template using 4Geeks' [One-Click Coding](https://s.4geeks.com/start?repo=https://github.com/4GeeksAcademy/typescript-hello) or locally on your computer.
+- Inicialización de una sala con todos los asientos libres.
+- Visualización de filas, columnas y estados de los asientos.
+- Reserva de asientos con validación de posición y disponibilidad.
+- Conteo de asientos ocupados y disponibles.
+- Búsqueda del primer par de asientos libres contiguos horizontalmente.
+- Pruebas de sala vacía, parcialmente ocupada, sin pares contiguos y completamente llena.
+- Interfaz web opcional para visualizar la sala, seleccionar y reservar asientos, consultar contadores y buscar parejas contiguas.
 
-## Before you begin
+## Instalación
 
-Install the packages by typing:
+Instala las dependencias del proyecto:
 
 ```bash
 npm install
 ```
 
-## How do I run my website to see live changes?
+## Ejecutar la interfaz web
 
-Type on the command line:
-
-```bash
-npm run start
-```
-
-Then open your local URL in the browser (usually `http://localhost:5173`).
-
-## How do I run this in GitHub Codespaces?
-
-Run the same development server:
+Inicia el servidor de desarrollo con:
 
 ```bash
 npm run start
 ```
 
-Vite is configured to listen on `0.0.0.0`, so Codespaces can detect and forward port `5173` automatically.
+Después abre [http://localhost:5173/](http://localhost:5173/) en el navegador.
 
-## How do I run only the TypeScript check?
+La interfaz web es opcional; la lógica principal también puede ejecutarse desde la consola.
 
-Use this command to validate only TypeScript without starting Vite:
+## Validar TypeScript
+
+Comprueba que el código TypeScript no tenga errores:
 
 ```bash
 npm run typecheck
 ```
 
-## How do I run `main.ts` from the terminal?
+## Ejecutar la versión de consola
 
-If you want to execute `./src/main.ts` directly and see `console.log` output in the terminal, run:
+Ejecuta las pruebas y visualizaciones de la lógica desde la terminal:
 
 ```bash
 npm run console
 ```
 
-This command is already wired to `./src/main.ts`.
+## Estructura principal
 
-## Where do I write my code?
-
-It depends on the language:
-
-- `./src/main.ts` for TypeScript logic.
-- `./src/style.css` for styles (Tailwind CSS v4 is already imported).
-- `./index.html` for the HTML shell.
-
-You can add more files as needed, just make sure to import them from `main.ts`.
-
-Note: if you can see the "Hello Rigo" card and the message "If you can see this, Tailwind is working.", Tailwind is configured correctly.
-
-## Troubleshooting
-
-### I don't see my changes...
-
-Every time you change any file inside `./src`, the website refreshes automatically (hot reload).
-
-If changes still don't appear, refresh clearing cache:
-
-- Mac: `Cmd + Shift + R`
-- Windows/Linux: `Ctrl + Shift + R`
-
-## How do I include more images in my project?
-
-Add them inside `./public` and reference them in HTML using `/your-image-name.ext`.
-
-Example:
-
-```html
-<img src="/rigo-baby.jpg" alt="Rigo" />
-```
-
-## How do I include more TypeScript files?
-
-Add files into `./src` and import them from `main.ts`.
-
-Example:
-
-```ts
-import { myVar } from "./file2";
-```
-
-## How do I publish the website?
-
-This boilerplate is compatible with Vercel in one step.
-
-<!-- hide -->
-## Contributors
-
-This template was built as part of the [4Geeks Academy Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [ehiber](https://github.com/ehiber) and contributors. Find out more about our [AI Engineering Course](https://4geeksacademy.com/us/coding-bootcamps/ai-engineering), [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), and [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
-
-You can find other templates and resources like this at the [school's GitHub page](https://github.com/4geeksacademy/).
-<!-- endhide -->
+- `src/main.ts`: funciones TypeScript y pruebas de consola.
+- `src/style.css`: estilos de la interfaz web.
+- `index.html`: estructura de la interfaz web.
